@@ -1,0 +1,43 @@
+{
+  "name": "odata-filter-to-ast",
+  "version": "1.0.0",
+  "description": "OData filter parser",
+  "keywords": [
+    "odata",
+    "filter",
+    "parser"
+  ],
+  "homepage": "https://github.com/petrzjunior/odata-filter-to-ast",
+  "bugs": "https://github.com/petrzjunior/odata-filter-to-ast/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/petrzjunior/odata-filter-to-ast.git"
+  },
+  "license": "MIT",
+  "author": "Petr Zahradník",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/odata-filter-to-ast.es.js",
+      "require": "./dist/odata-filter-to-ast.cjs.js"
+    }
+  },
+  "main": "dist/odata-filter-to-ast.cjs.js",
+  "module": "dist/odata-filter-to-ast.es.js",
+  "source": "src/index.ts",
+  "types": "dist/types.d.ts",
+  "files": [
+    "dist/*"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "coverage": "vitest run --coverage",
+    "dev": "vite",
+    "preview": "vite preview",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "vite": "^2.9.12",
+    "vitest": "^0.16.0"
+  }
+}
