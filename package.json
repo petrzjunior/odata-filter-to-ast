@@ -34,6 +34,7 @@
     "coverage": "vitest run --coverage",
     "dev": "vite",
     "generate-grammar": "peggy --plugin ts-pegjs -o src/odata-grammar.ts src/odata.pegjs",
+    "prepublishOnly": "peggy --plugin ts-pegjs -o src/odata-grammar.ts src/odata.pegjs && vite build",
     "preview": "vite preview",
     "test": "vitest"
   },
