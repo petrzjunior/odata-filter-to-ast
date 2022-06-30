@@ -1,7 +1,7 @@
 {
   "name": "odata-filter-to-ast",
   "version": "1.0.0",
-  "description": "OData filter parser",
+  "description": "Simple OData $filter query parser.",
   "keywords": [
     "odata",
     "filter",
@@ -18,8 +18,8 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/odata-filter-to-ast.es.js",
-      "require": "./dist/odata-filter-to-ast.cjs.js"
+      "require": "./dist/odata-filter-to-ast.cjs.js",
+      "import": "./dist/odata-filter-to-ast.es.js"
     }
   },
   "main": "dist/odata-filter-to-ast.cjs.js",
@@ -33,11 +33,15 @@
     "build": "vite build",
     "coverage": "vitest run --coverage",
     "dev": "vite",
+    "generate-grammar": "peggy --plugin ts-pegjs -o src/odata-grammar.ts src/odata.pegjs",
     "preview": "vite preview",
     "test": "vitest"
   },
   "devDependencies": {
-    "vite": "^2.9.12",
-    "vitest": "^0.16.0"
+    "c8": "7.11.3",
+    "peggy": "1.2.0",
+    "ts-pegjs": "1.2.2",
+    "vite": "2.9.12",
+    "vitest": "0.16.0"
   }
 }
