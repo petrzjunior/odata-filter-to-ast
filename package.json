@@ -1,6 +1,6 @@
 {
   "name": "odata-filter-to-ast",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Simple OData $filter query parser.",
   "keywords": [
     "odata",
