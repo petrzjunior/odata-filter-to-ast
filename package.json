@@ -1,6 +1,6 @@
 {
   "name": "odata-filter-to-ast",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple OData $filter query parser.",
   "keywords": [
     "odata",
@@ -30,7 +30,7 @@
     "dist/*"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "peggy --plugin ts-pegjs -o src/odata-grammar.ts src/odata.pegjs && vite build",
     "coverage": "vitest run --coverage",
     "dev": "vite",
     "generate-grammar": "peggy --plugin ts-pegjs -o src/odata-grammar.ts src/odata.pegjs",

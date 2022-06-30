@@ -350,7 +350,7 @@ function peg$parse(input: string, options?: IParseOptions) {
   const peg$c55 = function(value: any): any {
         return {
           type: 'primitive',
-          value: new Boolean(value),
+          value: Boolean(value),
         };
       };
   const peg$c56 = "null";

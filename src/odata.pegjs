@@ -177,7 +177,7 @@ boolean
   = value:("true"i / "false"i) {
       return {
         type: 'primitive',
-        value: new Boolean(value),
+        value: Boolean(value),
       };
     }
 
