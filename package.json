@@ -1,6 +1,6 @@
 {
   "name": "odata-filter-to-ast",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Simple OData $filter query parser.",
   "keywords": [
     "odata",
@@ -30,11 +30,11 @@
     "dist/*"
   ],
   "scripts": {
-    "build": "peggy --plugin ts-pegjs -o src/odata-grammar.ts src/odata.pegjs && vite build",
+    "build": "peggy --plugin ts-pegjs --allowed-start-rules filter -o src/odata-grammar-filter.ts src/odata.pegjs && peggy --plugin ts-pegjs --allowed-start-rules orderBy -o src/odata-grammar-order-by.ts src/odata.pegjs && vite build",
     "coverage": "vitest run --coverage",
     "dev": "vite",
-    "generate-grammar": "peggy --plugin ts-pegjs -o src/odata-grammar.ts src/odata.pegjs",
-    "prepublishOnly": "peggy --plugin ts-pegjs -o src/odata-grammar.ts src/odata.pegjs && vite build",
+    "generate-grammar": "peggy --plugin ts-pegjs --allowed-start-rules filter -o src/odata-grammar-filter.ts src/odata.pegjs && peggy --plugin ts-pegjs --allowed-start-rules orderBy -o src/odata-grammar-order-by.ts src/odata.pegjs",
+    "prepublishOnly": "peggy --plugin ts-pegjs --allowed-start-rules filter -o src/odata-grammar-filter.ts src/odata.pegjs && peggy --plugin ts-pegjs --allowed-start-rules orderBy -o src/odata-grammar-order-by.ts src/odata.pegjs && vite build",
     "preview": "vite preview",
     "test": "vitest"
   },

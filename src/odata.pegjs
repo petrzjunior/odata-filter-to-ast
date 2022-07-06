@@ -2,15 +2,29 @@
  * Inspired by http://docs.oasis-open.org/odata/odata/v4.01/cs01/abnf/odata-abnf-construction-rules.txt
  */
 
-expression
+filter
   = orExpr
+
+orderBy
+  = head:orderByItem tail:( "," elem:orderByItem { return elem; } )* {
+      return [head, ...tail];
+    }
+
+orderByItem
+  = expr:leftExpr dir:( SP dir:direction { return dir; })? {
+      return {
+        type: 'orderByItem',
+        expr,
+        dir: dir ?? 'asc',
+      }
+    }
 
 // GROUPING
 groupingExpr
   = parenExpr
 
 parenExpr
-  = "(" value:expression ")" {
+  = "(" value:filter ")" {
       return value;
     }
 
@@ -21,7 +35,8 @@ primaryExpr
   / rightExpr
 
 leftExpr
-  = memberExpr
+  = functionExpr
+  / memberExpr
 
 rightExpr
   = primitive
@@ -35,7 +50,7 @@ memberExpr
     }
 
 functionExpr
-  = name:odataIdentifier "(" head:primaryExpr tail:("," arg:primaryExpr { return arg; })* ")" {
+  = name:odataIdentifier "(" head:primaryExpr tail:( "," arg:primaryExpr { return arg; } )* ")" {
       return {
         type: 'functionExpr',
         name,
@@ -46,8 +61,7 @@ functionExpr
 // RELATIONAL
 
 relationalExpr
-  = functionExpr
-  / groupingExpr
+  = groupingExpr
   / inExpr
   / eqExpr
   / neExpr
@@ -55,6 +69,7 @@ relationalExpr
   / geExpr
   / ltExpr
   / leExpr
+  / functionExpr
 
 inExpr
   = left:leftExpr SP "in" SP right:arrayExpr {
@@ -189,17 +204,21 @@ null
       };
     }
 
+direction
+  = "asc"
+  / "desc"
+
 odataIdentifier
   = $ ( identifierLeadingCharacter identifierCharacter* )
 
 identifierLeadingCharacter
   = ALPHA
-  / "_"         // plus Unicode characters from the categories L or Nl
+  / "_"
 
 identifierCharacter
   = ALPHA
   / "_"
-  / DIGIT // plus Unicode characters from the categories L, Nl, Nd, Mn, Mc, Pc, or Cf
+  / DIGIT
 
 SIGN
   = "+"

@@ -1,6 +1,6 @@
 # odata-filter-to-ast
 
-Simple [OData](https://www.odata.org/) `$filter` query parser with zero dependencies.
+Simple [OData](https://www.odata.org/) query parser with zero dependencies.
 
 ![npm version](https://img.shields.io/npm/v/odata-filter-to-ast)
 ![MIT license](https://img.shields.io/npm/l/odata-filter-to-ast)
@@ -14,15 +14,17 @@ $ npm install odata-filter-to-ast
 ```
 
 Usage in code:
-```js
-import {parseFilter} from 'odata-filter-to-ast';
 
-parseFilter(`Name gt "Milk" or Price lt -2.55 or Size ne 3`)
+```js
+import {parseFilter, parseOrderBy} from 'odata-filter-to-ast';
+
+parseFilter(`Name gt "Milk" or Price lt -2.55 or Size ne 3`);
+parseOrderBy(`age,sum(height,width) desc`);
 ```
 
 Result:
 
-```json5
+```json lines
 {
 	type: 'orExpr',
 	left: {
@@ -62,20 +64,53 @@ Result:
 		}
 	}
 }
+[
+	{
+		type: 'orderByItem',
+		expr: {
+			type: 'memberExpr',
+			value: 'age',
+		},
+		dir: 'asc',
+	},
+	{
+		type: 'orderByItem',
+		expr: {
+			type: 'functionExpr',
+			name: 'sum',
+			arguments: [
+				{
+					type: 'memberExpr',
+					value: 'height',
+				},
+				{
+					type: 'memberExpr',
+					value: 'width',
+				},
+			],
+		},
+		dir: 'desc',
+	},
+]
 ```
 
 ## Supported constructs
 
-The following construct from [OData specification](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part2-url-conventions.html) are supported:
+The following construct
+from [OData specification](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part2-url-conventions.html) are
+supported:
+
 - JS primitives `-42`, `3.14`, `6.022e23`, `"string"`, `true`, `false`, `null`
 - field identifiers `iDenT_iFi3r`
 - heterogeneous arrays `["a","r","r","a","y",7,false,null]`
 - primitive relations `eq`, `ne`, `gt`, `gt`, `lt`, `le`
 - array relation `in`
 - boolean conjunctions `and`, `or`
-- precedence grouping `( ... )`
+- operator priority grouping `( ... )`
 - function calls `includes(Name,"Joe")`
+- sort directions `asc`, `desc`
 
 ## Related
 
-Built using https://github.com/peggyjs/peggy and https://github.com/metadevpro/ts-pegjs
+- Parser built using [Peggy](https://github.com/peggyjs/peggy) and [TS PEG.js](https://github.com/metadevpro/ts-pegjs)
+- Grammar inspired by the [OData specification](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part2-url-conventions.html#_Toc31361038) and the [OData ABNF Construction Rules](http://docs.oasis-open.org/odata/odata/v4.01/cs01/abnf/odata-abnf-construction-rules.txt)
