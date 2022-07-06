@@ -5,6 +5,7 @@ Simple [OData](https://www.odata.org/) query parser with zero dependencies.
 ![npm version](https://img.shields.io/npm/v/odata-filter-to-ast)
 ![MIT license](https://img.shields.io/npm/l/odata-filter-to-ast)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/petrzjunior/odata-filter-to-ast)
+![dependencies](https://img.shields.io/badge/dependencies-0-brightgreen)
 ![npm](https://img.shields.io/npm/dw/odata-filter-to-ast)
 
 ## Usage
