@@ -6,6 +6,9 @@ export default defineConfig({
 		lib: {
 			entry: "src/index.ts",
 			formats: ["es", "cjs"],
+			fileName: (format) => {
+				return format === "cjs" ? "odata-filer-to-ast.cjs" : `odata-filer-to-ast.${format}.js`;
+			}
 		}
 	},
 	test: {

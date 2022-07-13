@@ -1,6 +1,6 @@
 {
   "name": "odata-filter-to-ast",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Simple OData $filter query parser.",
   "keywords": [
     "odata",
@@ -18,11 +18,11 @@
   "type": "module",
   "exports": {
     ".": {
-      "require": "./dist/odata-filter-to-ast.cjs.js",
+      "require": "./dist/odata-filter-to-ast.cjs",
       "import": "./dist/odata-filter-to-ast.es.js"
     }
   },
-  "main": "dist/odata-filter-to-ast.cjs.js",
+  "main": "dist/odata-filter-to-ast.cjs",
   "module": "dist/odata-filter-to-ast.es.js",
   "source": "src/index.ts",
   "types": "dist/index.d.ts",
