@@ -7,7 +7,7 @@ export default defineConfig({
 			entry: "src/index.ts",
 			formats: ["es", "cjs"],
 			fileName: (format) => {
-				return format === "cjs" ? "odata-filer-to-ast.cjs" : `odata-filer-to-ast.${format}.js`;
+				return format === "cjs" ? "odata-filter-to-ast.cjs" : `odata-filter-to-ast.${format}.js`;
 			}
 		}
 	},
