@@ -25,7 +25,7 @@ parseOrderBy(`age,sum(height,width) desc`);
 
 Result:
 
-```json lines
+```js
 {
 	type: 'orExpr',
 	left: {
