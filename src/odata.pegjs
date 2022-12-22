@@ -192,7 +192,7 @@ boolean
   = value:("true"i / "false"i) {
       return {
         type: 'primitive',
-        value: Boolean(value),
+        value: value === "true" ? true : false,
       };
     }
 
