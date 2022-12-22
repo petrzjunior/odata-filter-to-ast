@@ -59,7 +59,7 @@ describe('parseFilter', () => {
 	});
 
 	it('should use parentheses for operation precedence', () => {
-		expect(parseFilter(`(Name eq "Milk" or Price ge 1e-1) and Price le 3.14e3 or State in [1,null]`)).toStrictEqual<Filter>({
+		expect(parseFilter(`(Name eq "Milk" or Price ge 1e-1) and Price le 3.14e3 or State in [1,null] and Fresh ne false`)).toStrictEqual<Filter>({
 			type: 'orExpr',
 			left: {
 				type: 'andExpr',
@@ -101,18 +101,32 @@ describe('parseFilter', () => {
 				}
 			},
 			right: {
-				type: 'inExpr',
+				type: 'andExpr',
 				left: {
-					type: 'memberExpr',
-					value: 'State',
+					type: 'inExpr',
+					left: {
+						type: 'memberExpr',
+						value: 'State',
+					},
+					right: {
+						type: 'arrayExpr',
+						value: [
+							{type: 'primitive', value: 1},
+							{type: 'primitive', value: null},
+						],
+					},
 				},
 				right: {
-					type: 'arrayExpr',
-					value: [
-						{type: 'primitive', value: 1},
-						{type: 'primitive', value: null},
-					],
-				},
+					type: 'neExpr',
+					left: {
+						type: 'memberExpr',
+						value: 'Fresh',
+					},
+					right: {
+						type: 'primitive',
+						value: false
+					}
+				}
 			}
 		});
 	});
