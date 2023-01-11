@@ -15,7 +15,6 @@
   },
   "license": "MIT",
   "author": "Petr Zahradník",
-  "type": "module",
   "exports": {
     ".": {
       "require": "./dist/odata-filter-to-ast.cjs",
