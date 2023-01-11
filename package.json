@@ -19,7 +19,8 @@
   "exports": {
     ".": {
       "require": "./dist/odata-filter-to-ast.cjs",
-      "import": "./dist/odata-filter-to-ast.es.js"
+      "import": "./dist/odata-filter-to-ast.es.js",
+      "types": "./dist/index.d.ts"
     }
   },
   "main": "dist/odata-filter-to-ast.cjs",
