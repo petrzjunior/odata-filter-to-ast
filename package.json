@@ -36,12 +36,19 @@
     "generate-grammar": "peggy --plugin=ts-pegjs --allowed-start-rules=filter --extra-options-file=pegconfig.json -o src/odata-grammar-filter.ts src/odata.pegjs && peggy --plugin=ts-pegjs --allowed-start-rules=orderBy --extra-options-file=pegconfig.json -o src/odata-grammar-order-by.ts src/odata.pegjs",
     "prepublishOnly": "peggy --plugin=ts-pegjs --allowed-start-rules=filter --extra-options-file=pegconfig.json -o src/odata-grammar-filter.ts src/odata.pegjs && peggy --plugin=ts-pegjs --allowed-start-rules=orderBy --extra-options-file=pegconfig.json -o src/odata-grammar-order-by.ts src/odata.pegjs && vite build",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "lint": "eslint src/"
   },
   "devDependencies": {
+    "@eslint/js": "9.1.1",
+    "@peggyjs/eslint-parser": "2.0.6",
+    "@peggyjs/eslint-plugin": "2.1.2",
     "@vitest/coverage-v8": "1.5.2",
+    "eslint": "9.1.1",
     "peggy": "3.0.2",
     "ts-pegjs": "4.2.1",
+    "typescript": "5.4.5",
+    "typescript-eslint": "7.7.1",
     "unbuild": "2.0.0",
     "vitest": "1.5.2"
   }
