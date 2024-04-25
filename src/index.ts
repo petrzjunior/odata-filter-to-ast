@@ -1,5 +1,5 @@
-import {parse as filterParser} from './odata-grammar-filter';
-import {parse as orderByParser} from './odata-grammar-order-by';
+import {parse as filterParser} from './odata-grammar-filter.js';
+import {parse as orderByParser} from './odata-grammar-order-by.js';
 
 export type OdataIdentifier = string;
 
