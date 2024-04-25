@@ -2,57 +2,49 @@
  * Inspired by http://docs.oasis-open.org/odata/odata/v4.01/cs01/abnf/odata-abnf-construction-rules.txt
  */
 
-filter
-  = orExpr
+Filter = OrExpr
 
-orderBy
-  = head:orderByItem tail:( "," elem:orderByItem { return elem; } )* {
+OrderBy = head:OrderByItem tail:( "," elem:OrderByItem { return elem; } )* {
       return [head, ...tail];
     }
 
-orderByItem
-  = expr:leftExpr dir:( SP dir:direction { return dir; })? {
+OrderByItem = expr:LeftExpr dir:( SP dir:Direction { return dir; } )? {
       return {
-        type: 'orderByItem',
+        type: 'OrderByItem',
         expr,
         dir: dir ?? 'asc',
       }
     }
 
 // GROUPING
-groupingExpr
-  = parenExpr
+GroupingExpr = ParenExpr
 
-parenExpr
-  = "(" value:filter ")" {
+ParenExpr = "(" value:Filter ")" {
       return value;
     }
 
 // PRIMARY
 
-primaryExpr
-  = leftExpr
-  / rightExpr
+PrimaryExpr
+  = LeftExpr
+  / RightExpr
 
-leftExpr
-  = functionExpr
-  / memberExpr
+LeftExpr
+  = FunctionExpr
+  / MemberExpr
 
-rightExpr
-  = primitive
+RightExpr = Primitive
 
-memberExpr
-  = value:odataIdentifier {
+MemberExpr = value:OdataIdentifier {
       return {
-        type: 'memberExpr',
+        type: 'MemberExpr',
         value,
       };
     }
 
-functionExpr
-  = name:odataIdentifier "(" head:primaryExpr tail:( "," arg:primaryExpr { return arg; } )* ")" {
+FunctionExpr = name:OdataIdentifier "(" head:PrimaryExpr tail:( "," arg:PrimaryExpr { return arg; } )* ")" {
       return {
-        type: 'functionExpr',
+        type: 'FunctionExpr',
         name,
         arguments: [head, ...tail],
       }
@@ -60,75 +52,68 @@ functionExpr
 
 // RELATIONAL
 
-relationalExpr
-  = groupingExpr
-  / inExpr
-  / eqExpr
-  / neExpr
-  / gtExpr
-  / geExpr
-  / ltExpr
-  / leExpr
-  / functionExpr
+RelationalExpr
+  = GroupingExpr
+  / InExpr
+  / EqExpr
+  / NeExpr
+  / GtExpr
+  / GeExpr
+  / LtExpr
+  / LeExpr
+  / FunctionExpr
 
-inExpr
-  = left:leftExpr SP "in" SP right:arrayExpr {
+InExpr = left:LeftExpr SP "in" SP right:ArrayExpr {
       return {
-        type: 'inExpr',
+        type: 'InExpr',
         left,
         right
       }
     }
 
-eqExpr
-  = left:leftExpr SP "eq" SP right:rightExpr {
+EqExpr = left:LeftExpr SP "eq" SP right:RightExpr {
       return {
-        type: 'eqExpr',
+        type: 'EqExpr',
         left,
         right,
       };
     }
 
-neExpr
-  = left:leftExpr SP "ne" SP right:rightExpr {
+NeExpr = left:LeftExpr SP "ne" SP right:RightExpr {
       return {
-        type: 'neExpr',
+        type: 'NeExpr',
         left,
         right,
       };
     }
 
-gtExpr
-  = left:leftExpr SP "gt" SP right:rightExpr {
+GtExpr = left:LeftExpr SP "gt" SP right:RightExpr {
       return {
-        type: 'gtExpr',
+        type: 'GtExpr',
         left,
         right,
       };
     }
 
-geExpr
-  = left:leftExpr SP "ge" SP right:rightExpr {
+GeExpr = left:LeftExpr SP "ge" SP right:RightExpr {
       return {
-        type: 'geExpr',
+        type: 'GeExpr',
         left,
         right,
       };
     }
 
-ltExpr
-  = left:leftExpr SP "lt" SP right:rightExpr {
+LtExpr = left:LeftExpr SP "lt" SP right:RightExpr {
       return {
-        type: 'ltExpr',
+        type: 'LtExpr',
         left,
         right,
       };
     }
 
-leExpr
-  = left:leftExpr SP "le" SP right:rightExpr {
+LeExpr = left:LeftExpr SP "le" SP right:RightExpr {
       return {
-        type: 'leExpr',
+        type: 'LeExpr',
         left,
         right,
       };
@@ -136,86 +121,80 @@ leExpr
 
 // CONDITIONAL AND
 
-andExpr
-  = left:relationalExpr SP "and" SP right:andExpr {
+AndExpr
+  = left:RelationalExpr SP "and" SP right:AndExpr {
       return {
-        type: 'andExpr',
+        type: 'AndExpr',
         left,
         right,
       };
     }
-  / relationalExpr
+  / RelationalExpr
 
-orExpr
-  = left:andExpr SP "or" SP right:orExpr {
+OrExpr
+  = left:AndExpr SP "or" SP right:OrExpr {
       return {
-        type: 'orExpr',
+        type: 'OrExpr',
         left,
         right,
       };
     }
-  / andExpr
+  / AndExpr
 
 // TOKENS
 
-arrayExpr
-  = "[" head:primitive tail:("," elem:primitive { return elem; })* "]" {
+ArrayExpr = "[" head:Primitive tail:( "," elem:Primitive { return elem; } )* "]" {
       return {
-        type: 'arrayExpr',
+        type: 'ArrayExpr',
         value: [head, ...tail],
       };
     }
 
-primitive
-  = string
-  / number
-  / boolean
-  / null
+Primitive
+  = String
+  / Number
+  / Boolean
+  / Null
 
-string
-  = DQUOTE value:[^"]+ DQUOTE {
+String = DQUOTE value:[^"]+ DQUOTE {
       return {
-        type: 'primitive',
+        type: 'Primitive',
         value: value.join(''),
       }
-    };
+    }
 
-number
-  = SIGN? DIGIT+ ( "." DIGIT+ )? ( "e"i SIGN? DIGIT+ )? {
+Number = SIGN? DIGIT+ ( "." DIGIT+ )? ( "e"i SIGN? DIGIT+ )? {
       return {
-        type: 'primitive',
+        type: 'Primitive',
         value: Number.parseFloat(text()),
       };
     }
 
-boolean
-  = value:("true"i / "false"i) {
+Boolean = value:( "true"i / "false"i ) {
       return {
-        type: 'primitive',
+        type: 'Primitive',
         value: value === "true" ? true : false,
       };
     }
 
-null
-  = "null" {
+Null = "null" {
       return {
-        type: 'primitive',
+        type: 'Primitive',
         value: null,
       };
     }
 
-direction
+Direction
   = "asc"
   / "desc"
 
-odataIdentifier
-  = $ ( identifierLeadingCharacter identifierCharacter* )
+OdataIdentifier = $( IdentifierLeadingCharacter IdentifierCharacter* )
 
-identifierLeadingCharacter
+IdentifierLeadingCharacter
   = ALPHA
   / "_"
 
-identifierCharacter
+IdentifierCharacter
   = ALPHA
   / "_"
   / DIGIT
@@ -228,11 +207,8 @@ ALPHA
   = [\x41-\x5A]
   / [\x61-\x7A]
 
-DIGIT
-  = [\x30-\x39]
+DIGIT = [\x30-\x39]
 
-DQUOTE
-  = "\x22"
+DQUOTE = "\x22"
 
-SP
-  = "\x20"
+SP = "\x20"

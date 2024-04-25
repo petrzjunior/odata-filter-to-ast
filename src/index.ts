@@ -15,7 +15,7 @@ export interface UnaryExpr {
 }
 
 export interface Primitive extends UnaryExpr {
-	type: 'primitive';
+	type: 'Primitive';
 	value: string | number | boolean | null;
 }
 
@@ -26,54 +26,54 @@ export interface BinaryExpr {
 }
 
 export interface MemberExpr extends UnaryExpr {
-	type: 'memberExpr';
+	type: 'MemberExpr';
 	value: OdataIdentifier;
 }
 
 export interface FunctionExpr {
-	type: 'functionExpr';
+	type: 'FunctionExpr';
 	name: string;
 	arguments: PrimaryExpr[];
 }
 
 export interface InExpr extends BinaryExpr {
-	type: 'inExpr';
+	type: 'InExpr';
 	left: LeftExpr;
 	right: ArrayExpr;
 }
 
 export interface EqExpr extends BinaryExpr {
-	type: 'eqExpr';
+	type: 'EqExpr';
 	left: LeftExpr;
 	right: RightExpr;
 }
 
 export interface NeExpr extends BinaryExpr {
-	type: 'neExpr';
+	type: 'NeExpr';
 	left: LeftExpr;
 	right: RightExpr;
 }
 
 export interface GtExpr extends BinaryExpr {
-	type: 'gtExpr';
+	type: 'GtExpr';
 	left: LeftExpr;
 	right: RightExpr;
 }
 
 export interface GeExpr extends BinaryExpr {
-	type: 'geExpr';
+	type: 'GeExpr';
 	left: LeftExpr;
 	right: RightExpr;
 }
 
 export interface LtExpr extends BinaryExpr {
-	type: 'ltExpr';
+	type: 'LtExpr';
 	left: LeftExpr;
 	right: RightExpr;
 }
 
 export interface LeExpr extends BinaryExpr {
-	type: 'leExpr';
+	type: 'LeExpr';
 	left: LeftExpr;
 	right: RightExpr;
 }
@@ -90,19 +90,19 @@ export type RelationalExpr =
 	| LeExpr;
 
 export interface AndExpr extends BinaryExpr {
-	type: 'andExpr';
+	type: 'AndExpr';
 	left: RelationalExpr;
 	right: RelationalExpr;
 }
 
 export interface OrExpr extends BinaryExpr {
-	type: 'orExpr';
+	type: 'OrExpr';
 	left: AndExpr | RelationalExpr;
 	right: AndExpr | RelationalExpr;
 }
 
 export interface ArrayExpr extends UnaryExpr {
-	type: 'arrayExpr';
+	type: 'ArrayExpr';
 	value: Primitive[];
 }
 
@@ -112,7 +112,7 @@ export enum OrderByDirection {
 }
 
 export interface OrderByItem {
-	type: 'orderByItem';
+	type: 'OrderByItem';
 	expr: LeftExpr;
 	dir: OrderByDirection;
 }

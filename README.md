@@ -27,39 +27,39 @@ Result:
 
 ```js
 {
-	type: 'orExpr',
+	type: 'OrExpr',
 	left: {
-		type: 'gtExpr',
+		type: 'GtExpr',
 		left: {
-			type: 'memberExpr',
+			type: 'MemberExpr',
 			value: 'Name',
 		},
 		right: {
-			type: 'primitive',
+			type: 'Primitive',
 			value: 'Milk'
 		},
 	},
 	right: {
-		type: 'orExpr',
+		type: 'OrExpr',
 		left: {
-			type: 'ltExpr',
+			type: 'LtExpr',
 			left: {
-				type: 'memberExpr',
+				type: 'MemberExpr',
 				value: 'Price',
 			},
 			right: {
-				type: 'primitive',
+				type: 'Primitive',
 				value: -2.55
 			}
 		},
 		right: {
-			type: 'neExpr',
+			type: 'NeExpr',
 			left: {
-				type: 'memberExpr',
+				type: 'MemberExpr',
 				value: 'Size',
 			},
 			right: {
-				type: 'primitive',
+				type: 'Primitive',
 				value: 3
 			}
 		}
@@ -67,25 +67,25 @@ Result:
 }
 [
 	{
-		type: 'orderByItem',
+		type: 'OrderByItem',
 		expr: {
-			type: 'memberExpr',
+			type: 'MemberExpr',
 			value: 'age',
 		},
 		dir: 'asc',
 	},
 	{
-		type: 'orderByItem',
+		type: 'OrderByItem',
 		expr: {
-			type: 'functionExpr',
+			type: 'FunctionExpr',
 			name: 'sum',
 			arguments: [
 				{
-					type: 'memberExpr',
+					type: 'MemberExpr',
 					value: 'height',
 				},
 				{
-					type: 'memberExpr',
+					type: 'MemberExpr',
 					value: 'width',
 				},
 			],

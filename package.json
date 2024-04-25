@@ -31,10 +31,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "peggy --plugin=ts-pegjs --allowed-start-rules=filter --extra-options-file=pegconfig.json -o src/odata-grammar-filter.ts src/odata.pegjs && peggy --plugin=ts-pegjs --allowed-start-rules=orderBy --extra-options-file=pegconfig.json -o src/odata-grammar-order-by.ts src/odata.pegjs && unbuild",
+    "build": "peggy --plugin=ts-pegjs --allowed-start-rules=Filter --extra-options-file=pegconfig.json -o src/odata-grammar-filter.ts src/odata.pegjs && peggy --plugin=ts-pegjs --allowed-start-rules=OrderBy --extra-options-file=pegconfig.json -o src/odata-grammar-order-by.ts src/odata.pegjs && unbuild",
     "coverage": "vitest run --coverage",
-    "generate-grammar": "peggy --plugin=ts-pegjs --allowed-start-rules=filter --extra-options-file=pegconfig.json -o src/odata-grammar-filter.ts src/odata.pegjs && peggy --plugin=ts-pegjs --allowed-start-rules=orderBy --extra-options-file=pegconfig.json -o src/odata-grammar-order-by.ts src/odata.pegjs",
-    "prepublishOnly": "peggy --plugin=ts-pegjs --allowed-start-rules=filter --extra-options-file=pegconfig.json -o src/odata-grammar-filter.ts src/odata.pegjs && peggy --plugin=ts-pegjs --allowed-start-rules=orderBy --extra-options-file=pegconfig.json -o src/odata-grammar-order-by.ts src/odata.pegjs && vite build",
+    "generate-grammar": "peggy --plugin=ts-pegjs --allowed-start-rules=Filter --extra-options-file=pegconfig.json -o src/odata-grammar-filter.ts src/odata.pegjs && peggy --plugin=ts-pegjs --allowed-start-rules=OrderBy --extra-options-file=pegconfig.json -o src/odata-grammar-order-by.ts src/odata.pegjs",
+    "prepublishOnly": "peggy --plugin=ts-pegjs --allowed-start-rules=Filter --extra-options-file=pegconfig.json -o src/odata-grammar-filter.ts src/odata.pegjs && peggy --plugin=ts-pegjs --allowed-start-rules=OrderBy --extra-options-file=pegconfig.json -o src/odata-grammar-order-by.ts src/odata.pegjs && vite build",
     "preview": "vite preview",
     "test": "vitest",
     "lint": "eslint src/"

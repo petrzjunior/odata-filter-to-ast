@@ -4,13 +4,13 @@ import {describe, expect, it} from 'vitest';
 describe('parseFilter', () => {
 	it('should parse binary operator', () => {
 		expect(parseFilter(`Name eq "Milk"`)).toStrictEqual<Filter>({
-			type: 'eqExpr',
+			type: 'EqExpr',
 			left: {
-				type: 'memberExpr',
+				type: 'MemberExpr',
 				value: 'Name',
 			},
 			right: {
-				type: 'primitive',
+				type: 'Primitive',
 				value: 'Milk',
 			},
 		});
@@ -18,39 +18,39 @@ describe('parseFilter', () => {
 
 	it('should parse logical conjunction operator', () => {
 		expect(parseFilter(`Name gt "Milk" or Price lt -2.55 or Size ne 3`)).toStrictEqual<Filter>({
-			type: 'orExpr',
+			type: 'OrExpr',
 			left: {
-				type: 'gtExpr',
+				type: 'GtExpr',
 				left: {
-					type: 'memberExpr',
+					type: 'MemberExpr',
 					value: 'Name',
 				},
 				right: {
-					type: 'primitive',
+					type: 'Primitive',
 					value: 'Milk'
 				},
 			},
 			right: {
-				type: 'orExpr',
+				type: 'OrExpr',
 				left: {
-					type: 'ltExpr',
+					type: 'LtExpr',
 					left: {
-						type: 'memberExpr',
+						type: 'MemberExpr',
 						value: 'Price',
 					},
 					right: {
-						type: 'primitive',
+						type: 'Primitive',
 						value: -2.55
 					}
 				},
 				right: {
-					type: 'neExpr',
+					type: 'NeExpr',
 					left: {
-						type: 'memberExpr',
+						type: 'MemberExpr',
 						value: 'Size',
 					},
 					right: {
-						type: 'primitive',
+						type: 'Primitive',
 						value: 3
 					}
 				}
@@ -60,70 +60,70 @@ describe('parseFilter', () => {
 
 	it('should use parentheses for operation precedence', () => {
 		expect(parseFilter(`(Name eq "Milk" or Price ge 1e-1) and Price le 3.14e3 or State in [1,null] and Fresh ne false`)).toStrictEqual<Filter>({
-			type: 'orExpr',
+			type: 'OrExpr',
 			left: {
-				type: 'andExpr',
+				type: 'AndExpr',
 				left: {
-					type: 'orExpr',
+					type: 'OrExpr',
 					left: {
-						type: 'eqExpr',
+						type: 'EqExpr',
 						left: {
-							type: 'memberExpr',
+							type: 'MemberExpr',
 							value: 'Name',
 						},
 						right: {
-							type: 'primitive',
+							type: 'Primitive',
 							value: 'Milk'
 						},
 					},
 					right: {
-						type: 'geExpr',
+						type: 'GeExpr',
 						left: {
-							type: 'memberExpr',
+							type: 'MemberExpr',
 							value: 'Price',
 						},
 						right: {
-							type: 'primitive',
+							type: 'Primitive',
 							value: 1e-1
 						}
 					}
 				},
 				right: {
-					type: 'leExpr',
+					type: 'LeExpr',
 					left: {
-						type: 'memberExpr',
+						type: 'MemberExpr',
 						value: 'Price',
 					},
 					right: {
-						type: 'primitive',
+						type: 'Primitive',
 						value: 3.14e3,
 					}
 				}
 			},
 			right: {
-				type: 'andExpr',
+				type: 'AndExpr',
 				left: {
-					type: 'inExpr',
+					type: 'InExpr',
 					left: {
-						type: 'memberExpr',
+						type: 'MemberExpr',
 						value: 'State',
 					},
 					right: {
-						type: 'arrayExpr',
+						type: 'ArrayExpr',
 						value: [
-							{type: 'primitive', value: 1},
-							{type: 'primitive', value: null},
+							{type: 'Primitive', value: 1},
+							{type: 'Primitive', value: null},
 						],
 					},
 				},
 				right: {
-					type: 'neExpr',
+					type: 'NeExpr',
 					left: {
-						type: 'memberExpr',
+						type: 'MemberExpr',
 						value: 'Fresh',
 					},
 					right: {
-						type: 'primitive',
+						type: 'Primitive',
 						value: false
 					}
 				}
@@ -133,15 +133,15 @@ describe('parseFilter', () => {
 
 	it('should parse string function', () => {
 		expect(parseFilter(`contains(CompanyName,"Alfreds")`)).toStrictEqual<Filter>({
-			type: 'functionExpr',
+			type: 'FunctionExpr',
 			name: 'contains',
 			arguments: [
 				{
-					type: 'memberExpr',
+					type: 'MemberExpr',
 					value: 'CompanyName',
 				},
 				{
-					type: 'primitive',
+					type: 'Primitive',
 					value: 'Alfreds',
 				},
 			],
@@ -153,9 +153,9 @@ describe('parseOrderBy', () => {
 	it('should parse single clause', () => {
 		expect(parseOrderBy('age asc')).toStrictEqual<OrderBy>([
 			{
-				type: 'orderByItem',
+				type: 'OrderByItem',
 				expr: {
-					type: 'memberExpr',
+					type: 'MemberExpr',
 					value: 'age',
 				},
 				dir: OrderByDirection.ASC,
@@ -163,9 +163,9 @@ describe('parseOrderBy', () => {
 		]);
 		expect(parseOrderBy('age desc')).toStrictEqual<OrderBy>([
 			{
-				type: 'orderByItem',
+				type: 'OrderByItem',
 				expr: {
-					type: 'memberExpr',
+					type: 'MemberExpr',
 					value: 'age',
 				},
 				dir: OrderByDirection.DESC,
@@ -173,9 +173,9 @@ describe('parseOrderBy', () => {
 		]);
 		expect(parseOrderBy('age')).toStrictEqual<OrderBy>([
 			{
-				type: 'orderByItem',
+				type: 'OrderByItem',
 				expr: {
-					type: 'memberExpr',
+					type: 'MemberExpr',
 					value: 'age',
 				},
 				dir: OrderByDirection.ASC,
@@ -186,17 +186,17 @@ describe('parseOrderBy', () => {
 	it('should parse mupliple clauses', () => {
 		expect(parseOrderBy('age asc,name asc')).toStrictEqual<OrderBy>([
 			{
-				type: 'orderByItem',
+				type: 'OrderByItem',
 				expr: {
-					type: 'memberExpr',
+					type: 'MemberExpr',
 					value: 'age',
 				},
 				dir: OrderByDirection.ASC,
 			},
 			{
-				type: 'orderByItem',
+				type: 'OrderByItem',
 				expr: {
-					type: 'memberExpr',
+					type: 'MemberExpr',
 					value: 'name',
 				},
 				dir: OrderByDirection.ASC,
@@ -204,25 +204,25 @@ describe('parseOrderBy', () => {
 		]);
 		expect(parseOrderBy('age desc,name,size desc')).toStrictEqual<OrderBy>([
 			{
-				type: 'orderByItem',
+				type: 'OrderByItem',
 				expr: {
-					type: 'memberExpr',
+					type: 'MemberExpr',
 					value: 'age',
 				},
 				dir: OrderByDirection.DESC,
 			},
 			{
-				type: 'orderByItem',
+				type: 'OrderByItem',
 				expr: {
-					type: 'memberExpr',
+					type: 'MemberExpr',
 					value: 'name',
 				},
 				dir: OrderByDirection.ASC,
 			},
 			{
-				type: 'orderByItem',
+				type: 'OrderByItem',
 				expr: {
-					type: 'memberExpr',
+					type: 'MemberExpr',
 					value: 'size',
 				},
 				dir: OrderByDirection.DESC,
@@ -230,33 +230,33 @@ describe('parseOrderBy', () => {
 		]);
 		expect(parseOrderBy('age,name,size desc,friendliness')).toStrictEqual<OrderBy>([
 			{
-				type: 'orderByItem',
+				type: 'OrderByItem',
 				expr: {
-					type: 'memberExpr',
+					type: 'MemberExpr',
 					value: 'age',
 				},
 				dir: OrderByDirection.ASC,
 			},
 			{
-				type: 'orderByItem',
+				type: 'OrderByItem',
 				expr: {
-					type: 'memberExpr',
+					type: 'MemberExpr',
 					value: 'name',
 				},
 				dir: OrderByDirection.ASC,
 			},
 			{
-				type: 'orderByItem',
+				type: 'OrderByItem',
 				expr: {
-					type: 'memberExpr',
+					type: 'MemberExpr',
 					value: 'size',
 				},
 				dir: OrderByDirection.DESC,
 			},
 			{
-				type: 'orderByItem',
+				type: 'OrderByItem',
 				expr: {
-					type: 'memberExpr',
+					type: 'MemberExpr',
 					value: 'friendliness',
 				},
 				dir: OrderByDirection.ASC,
@@ -267,25 +267,25 @@ describe('parseOrderBy', () => {
 	it('should parse function', () => {
 		expect(parseOrderBy('age,sum(height,width) desc')).toStrictEqual<OrderBy>([
 			{
-				type: 'orderByItem',
+				type: 'OrderByItem',
 				expr: {
-					type: 'memberExpr',
+					type: 'MemberExpr',
 					value: 'age',
 				},
 				dir: OrderByDirection.ASC,
 			},
 			{
-				type: 'orderByItem',
+				type: 'OrderByItem',
 				expr: {
-					type: 'functionExpr',
+					type: 'FunctionExpr',
 					name: 'sum',
 					arguments: [
 						{
-							type: 'memberExpr',
+							type: 'MemberExpr',
 							value: 'height',
 						},
 						{
-							type: 'memberExpr',
+							type: 'MemberExpr',
 							value: 'width',
 						},
 					],
