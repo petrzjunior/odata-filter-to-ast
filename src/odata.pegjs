@@ -4,11 +4,11 @@
 
 Filter = OrExpr
 
-OrderBy = head:OrderByItem tail:( "," elem:OrderByItem { return elem; } )* {
+OrderBy = head:OrderByItem tail:( OWS "," OWS elem:OrderByItem { return elem; } )* OWS {
       return [head, ...tail];
     }
 
-OrderByItem = expr:LeftExpr dir:( SP dir:Direction { return dir; } )? {
+OrderByItem = expr:LeftExpr dir:( RWS dir:Direction { return dir; } )? {
       return {
         type: 'OrderByItem',
         expr,
@@ -19,7 +19,7 @@ OrderByItem = expr:LeftExpr dir:( SP dir:Direction { return dir; } )? {
 // GROUPING
 GroupingExpr = ParenExpr
 
-ParenExpr = "(" value:Filter ")" {
+ParenExpr = "(" OWS value:Filter OWS ")" {
       return value;
     }
 
@@ -42,7 +42,7 @@ MemberExpr = value:OdataIdentifier {
       };
     }
 
-FunctionExpr = name:OdataIdentifier "(" head:PrimaryExpr tail:( "," arg:PrimaryExpr { return arg; } )* ")" {
+FunctionExpr = name:OdataIdentifier "(" OWS head:PrimaryExpr tail:( OWS "," OWS arg:PrimaryExpr { return arg; } )* OWS ")" {
       return {
         type: 'FunctionExpr',
         name,
@@ -63,7 +63,7 @@ RelationalExpr
   / LeExpr
   / FunctionExpr
 
-InExpr = left:LeftExpr SP "in" SP right:ArrayExpr {
+InExpr = left:LeftExpr RWS "in" RWS right:ArrayExpr {
       return {
         type: 'InExpr',
         left,
@@ -71,7 +71,7 @@ InExpr = left:LeftExpr SP "in" SP right:ArrayExpr {
       }
     }
 
-EqExpr = left:LeftExpr SP "eq" SP right:RightExpr {
+EqExpr = left:LeftExpr RWS "eq" RWS right:RightExpr {
       return {
         type: 'EqExpr',
         left,
@@ -79,7 +79,7 @@ EqExpr = left:LeftExpr SP "eq" SP right:RightExpr {
       };
     }
 
-NeExpr = left:LeftExpr SP "ne" SP right:RightExpr {
+NeExpr = left:LeftExpr RWS "ne" RWS right:RightExpr {
       return {
         type: 'NeExpr',
         left,
@@ -87,7 +87,7 @@ NeExpr = left:LeftExpr SP "ne" SP right:RightExpr {
       };
     }
 
-GtExpr = left:LeftExpr SP "gt" SP right:RightExpr {
+GtExpr = left:LeftExpr RWS "gt" RWS right:RightExpr {
       return {
         type: 'GtExpr',
         left,
@@ -95,7 +95,7 @@ GtExpr = left:LeftExpr SP "gt" SP right:RightExpr {
       };
     }
 
-GeExpr = left:LeftExpr SP "ge" SP right:RightExpr {
+GeExpr = left:LeftExpr RWS "ge" RWS right:RightExpr {
       return {
         type: 'GeExpr',
         left,
@@ -103,7 +103,7 @@ GeExpr = left:LeftExpr SP "ge" SP right:RightExpr {
       };
     }
 
-LtExpr = left:LeftExpr SP "lt" SP right:RightExpr {
+LtExpr = left:LeftExpr RWS "lt" RWS right:RightExpr {
       return {
         type: 'LtExpr',
         left,
@@ -111,7 +111,7 @@ LtExpr = left:LeftExpr SP "lt" SP right:RightExpr {
       };
     }
 
-LeExpr = left:LeftExpr SP "le" SP right:RightExpr {
+LeExpr = left:LeftExpr RWS "le" RWS right:RightExpr {
       return {
         type: 'LeExpr',
         left,
@@ -122,7 +122,7 @@ LeExpr = left:LeftExpr SP "le" SP right:RightExpr {
 // CONDITIONAL AND
 
 AndExpr
-  = left:RelationalExpr SP "and" SP right:AndExpr {
+  = left:RelationalExpr RWS "and" RWS right:AndExpr {
       return {
         type: 'AndExpr',
         left,
@@ -132,7 +132,7 @@ AndExpr
   / RelationalExpr
 
 OrExpr
-  = left:AndExpr SP "or" SP right:OrExpr {
+  = left:AndExpr RWS "or" RWS right:OrExpr {
       return {
         type: 'OrExpr',
         left,
@@ -143,7 +143,7 @@ OrExpr
 
 // TOKENS
 
-ArrayExpr = "[" head:Primitive tail:( "," elem:Primitive { return elem; } )* "]" {
+ArrayExpr = "[" OWS head:Primitive tail:( OWS "," OWS elem:Primitive { return elem; } )* OWS "]" {
       return {
         type: 'ArrayExpr',
         value: [head, ...tail],
@@ -156,12 +156,21 @@ Primitive
   / Boolean
   / Null
 
-String = DQUOTE value:[^"]+ DQUOTE {
+String = SQUOTE value:( SquoteInString / StringNoSquote )* SQUOTE {
       return {
         type: 'Primitive',
         value: value.join(''),
       }
     }
+
+SquoteInString = SQUOTE SQUOTE {
+	  return "'";
+	}
+
+
+StringNoSquote = value:[^']+ {
+		return text();
+	}
 
 Number = SIGN? DIGIT+ ( "." DIGIT+ )? ( "e"i SIGN? DIGIT+ )? {
       return {
@@ -209,6 +218,12 @@ ALPHA
 
 DIGIT = [\x30-\x39]
 
-DQUOTE = "\x22"
+SQUOTE = "\x27"
 
 SP = "\x20"
+
+// OPTIONAL WHITESPACE
+OWS = SP*
+
+// REQUIRED WHITESPACE
+RWS = SP+

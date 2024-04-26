@@ -101,17 +101,25 @@ The following construct
 from [OData specification](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part2-url-conventions.html) are
 supported:
 
-- JS primitives `-42`, `3.14`, `6.022e23`, `"string"`, `true`, `false`, `null`
+- JS primitives `-42`, `3.14`, `6.022e23`, `'string'`, `true`, `false`, `null`
 - field identifiers `iDenT_iFi3r`
-- heterogeneous arrays `["a","r","r","a","y",7,false,null]`
+- heterogeneous arrays `['a','r','r','a','y',7,false,null]`
 - primitive relations `eq`, `ne`, `gt`, `gt`, `lt`, `le`
 - array relation `in`
 - boolean conjunctions `and`, `or`
 - operator priority grouping `( ... )`
-- function calls `includes(Name,"Joe")`
+- function calls `includes(Name,'Joe')`
 - sort directions `asc`, `desc`
+
+Filters should be compatible with [odata-filter-builder](https://www.npmjs.com/package/odata-filter-builder).
+
+Did you find a string which could not be parsed? File
+an [issue](https://github.com/petrzjunior/odata-filter-to-ast/issues), please.
 
 ## Related
 
 - Parser built using [Peggy](https://github.com/peggyjs/peggy) and [TS PEG.js](https://github.com/metadevpro/ts-pegjs)
-- Grammar inspired by the [OData specification](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part2-url-conventions.html#_Toc31361038) and the [OData ABNF Construction Rules](http://docs.oasis-open.org/odata/odata/v4.01/cs01/abnf/odata-abnf-construction-rules.txt)
+- Grammar inspired by
+  the [OData specification](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part2-url-conventions.html#_Toc31361038)
+  and
+  the [OData ABNF Construction Rules](http://docs.oasis-open.org/odata/odata/v4.01/cs01/abnf/odata-abnf-construction-rules.txt)

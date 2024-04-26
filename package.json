@@ -45,6 +45,7 @@
     "@peggyjs/eslint-plugin": "2.1.2",
     "@vitest/coverage-v8": "1.5.2",
     "eslint": "9.1.1",
+    "odata-filter-builder": "1.0.0",
     "peggy": "3.0.2",
     "ts-pegjs": "4.2.1",
     "typescript": "5.4.5",
