@@ -3,7 +3,7 @@ import {describe, expect, it} from 'vitest';
 
 describe('parseFilter', () => {
 	it('should parse binary operator', () => {
-		expect(parseFilter(`Name eq "Milk"`)).toStrictEqual<Filter>({
+		expect(parseFilter(`Name eq 'Milk'`)).toStrictEqual<Filter>({
 			type: 'EqExpr',
 			left: {
 				type: 'MemberExpr',
@@ -16,8 +16,29 @@ describe('parseFilter', () => {
 		});
 	});
 
+	it('should parse escaped string', () => {
+		expect(parseFilter(`Name eq 'Milk from "McDonald''s farm"'`)).toStrictEqual<Filter>({
+			type: 'EqExpr',
+			left: {
+				type: 'MemberExpr',
+				value: 'Name',
+			},
+			right: {
+				type: 'Primitive',
+				value: `Milk from "McDonald's farm"`,
+			},
+		});
+	});
+
+	it('should ignore extra whitespace', () => {
+		expect(parseFilter(`( (  Name  eq   'Milk'  or  Price  ge  1e-1 )  and  Price  le  3.14e3 )  or ( State  in  [ 1 , null ]  and  Fresh  ne  false )`))
+			.toStrictEqual<Filter>(parseFilter(`((Name eq 'Milk' or Price ge 1e-1) and Price le 3.14e3) or (State in [1,null] and Fresh ne false)`));
+		expect(parseFilter(`contains(   CompanyName   ,   'Alfreds'   )`))
+			.toStrictEqual<Filter>(parseFilter(`contains(CompanyName,'Alfreds')`));
+	});
+
 	it('should parse logical conjunction operator', () => {
-		expect(parseFilter(`Name gt "Milk" or Price lt -2.55 or Size ne 3`)).toStrictEqual<Filter>({
+		expect(parseFilter(`Name gt 'Milk' or Price lt -2.55 or Size ne 3`)).toStrictEqual<Filter>({
 			type: 'OrExpr',
 			left: {
 				type: 'GtExpr',
@@ -27,7 +48,7 @@ describe('parseFilter', () => {
 				},
 				right: {
 					type: 'Primitive',
-					value: 'Milk'
+					value: 'Milk',
 				},
 			},
 			right: {
@@ -40,8 +61,8 @@ describe('parseFilter', () => {
 					},
 					right: {
 						type: 'Primitive',
-						value: -2.55
-					}
+						value: -2.55,
+					},
 				},
 				right: {
 					type: 'NeExpr',
@@ -51,15 +72,15 @@ describe('parseFilter', () => {
 					},
 					right: {
 						type: 'Primitive',
-						value: 3
-					}
-				}
-			}
+						value: 3,
+					},
+				},
+			},
 		});
 	});
 
 	it('should use parentheses for operation precedence', () => {
-		expect(parseFilter(`(Name eq "Milk" or Price ge 1e-1) and Price le 3.14e3 or State in [1,null] and Fresh ne false`)).toStrictEqual<Filter>({
+		expect(parseFilter(`(Name eq 'Milk' or Price ge 1e-1) and Price le 3.14e3 or State in [1,null] and Fresh ne false`)).toStrictEqual<Filter>({
 			type: 'OrExpr',
 			left: {
 				type: 'AndExpr',
@@ -73,7 +94,7 @@ describe('parseFilter', () => {
 						},
 						right: {
 							type: 'Primitive',
-							value: 'Milk'
+							value: 'Milk',
 						},
 					},
 					right: {
@@ -84,9 +105,9 @@ describe('parseFilter', () => {
 						},
 						right: {
 							type: 'Primitive',
-							value: 1e-1
-						}
-					}
+							value: 1e-1,
+						},
+					},
 				},
 				right: {
 					type: 'LeExpr',
@@ -97,8 +118,8 @@ describe('parseFilter', () => {
 					right: {
 						type: 'Primitive',
 						value: 3.14e3,
-					}
-				}
+					},
+				},
 			},
 			right: {
 				type: 'AndExpr',
@@ -124,15 +145,15 @@ describe('parseFilter', () => {
 					},
 					right: {
 						type: 'Primitive',
-						value: false
-					}
-				}
-			}
+						value: false,
+					},
+				},
+			},
 		});
 	});
 
 	it('should parse string function', () => {
-		expect(parseFilter(`contains(CompanyName,"Alfreds")`)).toStrictEqual<Filter>({
+		expect(parseFilter(`contains(CompanyName,'Alfreds')`)).toStrictEqual<Filter>({
 			type: 'FunctionExpr',
 			name: 'contains',
 			arguments: [
@@ -159,7 +180,7 @@ describe('parseOrderBy', () => {
 					value: 'age',
 				},
 				dir: OrderByDirection.ASC,
-			}
+			},
 		]);
 		expect(parseOrderBy('age desc')).toStrictEqual<OrderBy>([
 			{
@@ -169,7 +190,7 @@ describe('parseOrderBy', () => {
 					value: 'age',
 				},
 				dir: OrderByDirection.DESC,
-			}
+			},
 		]);
 		expect(parseOrderBy('age')).toStrictEqual<OrderBy>([
 			{
@@ -179,7 +200,7 @@ describe('parseOrderBy', () => {
 					value: 'age',
 				},
 				dir: OrderByDirection.ASC,
-			}
+			},
 		]);
 	});
 
@@ -200,7 +221,7 @@ describe('parseOrderBy', () => {
 					value: 'name',
 				},
 				dir: OrderByDirection.ASC,
-			}
+			},
 		]);
 		expect(parseOrderBy('age desc,name,size desc')).toStrictEqual<OrderBy>([
 			{
@@ -226,7 +247,7 @@ describe('parseOrderBy', () => {
 					value: 'size',
 				},
 				dir: OrderByDirection.DESC,
-			}
+			},
 		]);
 		expect(parseOrderBy('age,name,size desc,friendliness')).toStrictEqual<OrderBy>([
 			{
@@ -260,7 +281,7 @@ describe('parseOrderBy', () => {
 					value: 'friendliness',
 				},
 				dir: OrderByDirection.ASC,
-			}
+			},
 		]);
 	});
 
@@ -293,5 +314,10 @@ describe('parseOrderBy', () => {
 				dir: OrderByDirection.DESC,
 			},
 		]);
+	});
+
+	it('should ignore extra whitespace', () => {
+		expect(parseOrderBy('age,name,size desc,friendliness,sum(height,width) asc'))
+			.toStrictEqual<OrderBy>(parseOrderBy('age  ,   name   ,    size    desc   ,   friendliness   ,   sum(   height   ,   width   )   asc'));
 	});
 });

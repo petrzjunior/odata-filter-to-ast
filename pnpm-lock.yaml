@@ -20,6 +20,9 @@ devDependencies:
   eslint:
     specifier: 9.1.1
     version: 9.1.1
+  odata-filter-builder:
+    specifier: 1.0.0
+    version: 1.0.0
   peggy:
     specifier: 3.0.2
     version: 3.0.2
@@ -2543,6 +2546,10 @@ packages:
     resolution: {integrity: sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==}
     dependencies:
       boolbase: 1.0.0
+    dev: true
+
+  /odata-filter-builder@1.0.0:
+    resolution: {integrity: sha512-Yifh36pkANQq0Y4HJOHIDYGjraSx1iRcAP5Qg7bUhoKTDvaxy2XnluvV1VpkbIWP5uRgJi+4FPZydjTPX0baDQ==}
     dev: true
 
   /once@1.4.0:
