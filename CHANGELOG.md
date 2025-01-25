@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0](https://github.com/petrzjunior/odata-filter-to-ast/compare/odata-filter-to-ast-v2.0.0...odata-filter-to-ast-v3.0.0) (2025-01-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* add support for round parentheses with `in` operator
+
+### Features
+
+* add support for round parentheses with `in` operator ([7d8a1bb](https://github.com/petrzjunior/odata-filter-to-ast/commit/7d8a1bb797e3306598485c8f5c46ab10aa6c9eb9))
+
 ## [2.0.0](https://github.com/petrzjunior/odata-filter-to-ast/compare/odata-filter-to-ast-v1.3.2...odata-filter-to-ast-v2.0.0) (2024-05-26)
 
 
