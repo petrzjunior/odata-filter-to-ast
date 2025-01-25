@@ -33,7 +33,9 @@ LeftExpr
   = FunctionExpr
   / MemberExpr
 
-RightExpr = Primitive
+RightExpr 
+  = Primitive
+  / ArrayExpr
 
 MemberExpr = value:OdataIdentifier {
       return {
@@ -143,7 +145,18 @@ OrExpr
 
 // TOKENS
 
-ArrayExpr = "[" OWS head:Primitive tail:( OWS "," OWS elem:Primitive { return elem; } )* OWS "]" {
+ArrayExpr
+  = ArrayCollectionExpr
+  / ArrayJsonExpr
+
+ArrayCollectionExpr = "(" OWS head:Primitive tail:( OWS "," OWS elem:Primitive { return elem; } )* OWS ")" {
+      return {
+        type: 'ArrayExpr',
+        value: [head, ...tail],
+      };
+    }
+
+ArrayJsonExpr = "[" OWS head:Primitive tail:( OWS "," OWS elem:Primitive { return elem; } )* OWS "]" {
       return {
         type: 'ArrayExpr',
         value: [head, ...tail],

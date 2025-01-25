@@ -152,20 +152,54 @@ describe('parseFilter', () => {
 		});
 	});
 
-	it('should parse string function', () => {
-		expect(parseFilter(`contains(CompanyName,'Alfreds')`)).toStrictEqual<Filter>({
-			type: 'FunctionExpr',
-			name: 'contains',
-			arguments: [
-				{
-					type: 'MemberExpr',
-					value: 'CompanyName',
-				},
-				{
-					type: 'Primitive',
-					value: 'Alfreds',
-				},
-			],
+	it('should parse `in` with parentheses (example 60)', () => {
+		expect(parseFilter(`Name in ('Milk', 'Cheese')`)).toStrictEqual<Filter>({
+			type: 'InExpr',
+			left: {
+				type: 'MemberExpr',
+				value: 'Name',
+			},
+			right: {
+				type: 'ArrayExpr',
+				value: [
+					{type: 'Primitive', value: 'Milk'},
+					{type: 'Primitive', value: 'Cheese'},
+				],
+			},
+		});
+	});
+
+	it('should parse string function (example 69)', () => {
+		expect(parseFilter(`concat(concat(City,', '),Country) eq 'Berlin, Germany'`)).toStrictEqual<Filter>({
+			type: 'EqExpr',
+			left: {
+				type: 'FunctionExpr',
+				name: 'concat',
+				arguments: [
+					{
+						type: 'FunctionExpr',
+						name: 'concat',
+						arguments: [
+							{
+								type: 'MemberExpr',
+								value: 'City',
+							},
+							{
+								type: 'Primitive',
+								value: ', ',
+							},
+						],
+					},
+					{
+						type: 'MemberExpr',
+						value: 'Country',
+					},
+				],
+			},
+			right: {
+				type: 'Primitive',
+				value: 'Berlin, Germany',
+			},
 		});
 	});
 });
