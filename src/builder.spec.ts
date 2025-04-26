@@ -1,4 +1,4 @@
-import builder from 'odata-filter-builder';
+import {ODataFilterBuilder} from 'odata-filter-builder';
 import {describe, expect, it} from 'vitest';
 import {Filter, parseFilter} from './index.js';
 
@@ -6,7 +6,7 @@ import {Filter, parseFilter} from './index.js';
 describe('filter', () => {
 	it('should parse binary operator', () => {
 		expect(parseFilter(
-			builder()
+			ODataFilterBuilder()
 				.eq('Name', 'Milk')
 				.toString()
 		)).toStrictEqual<Filter>({
@@ -23,7 +23,7 @@ describe('filter', () => {
 	});
 
 	it('should parse logical conjunction operator', () => {
-		expect(parseFilter(builder.or()
+		expect(parseFilter(ODataFilterBuilder.or()
 			.gt('Name', 'Milk')
 			.lt('Price', -2.55)
 			.ne('Size', 3)
@@ -70,7 +70,7 @@ describe('filter', () => {
 	});
 
 	it('should parse odata-filter-builder or + and', () => {
-		expect(parseFilter(builder.or()
+		expect(parseFilter(ODataFilterBuilder.or()
 			.contains(x => x.toLower('Name'), 'google')
 			.contains(x => x.toLower('Name'), 'yandex')
 			.and(x => x.eq('Name', 'Search Engine'))

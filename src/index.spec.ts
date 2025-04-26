@@ -1,4 +1,4 @@
-import {Filter, OrderBy, OrderByDirection, parseFilter, parseOrderBy} from './index';
+import {Filter, OrderBy, OrderByDirection, parseFilter, parseOrderBy} from './index.js';
 import {describe, expect, it} from 'vitest';
 
 describe('parseFilter', () => {
