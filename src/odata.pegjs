@@ -8,7 +8,7 @@ OrderBy = head:OrderByItem tail:( OWS "," OWS elem:OrderByItem { return elem; } 
       return [head, ...tail];
     }
 
-OrderByItem = expr:LeftExpr dir:( RWS dir:Direction { return dir; } )? {
+OrderByItem = expr:PrimaryExpr dir:( RWS dir:Direction { return dir; } )? {
       return {
         type: 'OrderByItem',
         expr,
@@ -26,16 +26,10 @@ ParenExpr = "(" OWS value:Filter OWS ")" {
 // PRIMARY
 
 PrimaryExpr
-  = LeftExpr
-  / RightExpr
-
-LeftExpr
   = FunctionExpr
-  / MemberExpr
-
-RightExpr 
-  = Primitive
   / ArrayExpr
+  / Primitive
+  / MemberExpr
 
 MemberExpr = value:OdataIdentifier {
       return {
@@ -65,7 +59,7 @@ RelationalExpr
   / LeExpr
   / FunctionExpr
 
-InExpr = left:LeftExpr RWS "in" RWS right:ArrayExpr {
+InExpr = left:PrimaryExpr RWS "in" RWS right:ArrayExpr {
       return {
         type: 'InExpr',
         left,
@@ -73,7 +67,7 @@ InExpr = left:LeftExpr RWS "in" RWS right:ArrayExpr {
       }
     }
 
-EqExpr = left:LeftExpr RWS "eq" RWS right:RightExpr {
+EqExpr = left:PrimaryExpr RWS "eq" RWS right:PrimaryExpr {
       return {
         type: 'EqExpr',
         left,
@@ -81,7 +75,7 @@ EqExpr = left:LeftExpr RWS "eq" RWS right:RightExpr {
       };
     }
 
-NeExpr = left:LeftExpr RWS "ne" RWS right:RightExpr {
+NeExpr = left:PrimaryExpr RWS "ne" RWS right:PrimaryExpr {
       return {
         type: 'NeExpr',
         left,
@@ -89,7 +83,7 @@ NeExpr = left:LeftExpr RWS "ne" RWS right:RightExpr {
       };
     }
 
-GtExpr = left:LeftExpr RWS "gt" RWS right:RightExpr {
+GtExpr = left:PrimaryExpr RWS "gt" RWS right:PrimaryExpr {
       return {
         type: 'GtExpr',
         left,
@@ -97,7 +91,7 @@ GtExpr = left:LeftExpr RWS "gt" RWS right:RightExpr {
       };
     }
 
-GeExpr = left:LeftExpr RWS "ge" RWS right:RightExpr {
+GeExpr = left:PrimaryExpr RWS "ge" RWS right:PrimaryExpr {
       return {
         type: 'GeExpr',
         left,
@@ -105,7 +99,7 @@ GeExpr = left:LeftExpr RWS "ge" RWS right:RightExpr {
       };
     }
 
-LtExpr = left:LeftExpr RWS "lt" RWS right:RightExpr {
+LtExpr = left:PrimaryExpr RWS "lt" RWS right:PrimaryExpr {
       return {
         type: 'LtExpr',
         left,
@@ -113,7 +107,7 @@ LtExpr = left:LeftExpr RWS "lt" RWS right:RightExpr {
       };
     }
 
-LeExpr = left:LeftExpr RWS "le" RWS right:RightExpr {
+LeExpr = left:PrimaryExpr RWS "le" RWS right:PrimaryExpr {
       return {
         type: 'LeExpr',
         left,

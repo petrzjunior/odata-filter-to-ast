@@ -1,6 +1,6 @@
-import {ODataFilterBuilder} from 'odata-filter-builder';
-import {describe, expect, it} from 'vitest';
-import {Filter, parseFilter} from './index.js';
+import { ODataFilterBuilder } from 'odata-filter-builder';
+import { describe, expect, it } from 'vitest';
+import { Filter, parseFilter } from './index.js';
 
 
 describe('filter', () => {
@@ -73,7 +73,7 @@ describe('filter', () => {
 		expect(parseFilter(ODataFilterBuilder.or()
 			.contains(x => x.toLower('Name'), 'google')
 			.contains(x => x.toLower('Name'), 'yandex')
-			.and(x => x.eq('Name', 'Search Engine'))
+			.and(x => x.eq(x => x.toLower('Name'), 'Search Engine'))
 			.toString()
 		)).toStrictEqual<Filter>({
 			type: 'AndExpr',
@@ -123,8 +123,12 @@ describe('filter', () => {
 			right: {
 				type: 'EqExpr',
 				left: {
-					type: 'MemberExpr',
-					value: 'Name',
+					type: 'FunctionExpr',
+					name: 'tolower',
+					arguments: [{
+						type: 'MemberExpr',
+						value: 'Name',
+					}]
 				},
 				right: {
 					type: 'Primitive',

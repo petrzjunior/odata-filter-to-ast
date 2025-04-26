@@ -1,13 +1,9 @@
-import {parse as filterParser} from './odata-grammar-filter.js';
-import {parse as orderByParser} from './odata-grammar-order-by.js';
+import { parse as filterParser } from './odata-grammar-filter.js';
+import { parse as orderByParser } from './odata-grammar-order-by.js';
 
 export type OdataIdentifier = string;
 
-export type LeftExpr = MemberExpr | FunctionExpr;
-
-export type RightExpr = Primitive;
-
-export type PrimaryExpr = LeftExpr | RightExpr;
+export type PrimaryExpr = FunctionExpr | ArrayExpr | Primitive | MemberExpr;
 
 export interface UnaryExpr {
 	type: string;
@@ -38,44 +34,44 @@ export interface FunctionExpr {
 
 export interface InExpr extends BinaryExpr {
 	type: 'InExpr';
-	left: LeftExpr;
+	left: PrimaryExpr;
 	right: ArrayExpr;
 }
 
 export interface EqExpr extends BinaryExpr {
 	type: 'EqExpr';
-	left: LeftExpr;
-	right: RightExpr;
+	left: PrimaryExpr;
+	right: PrimaryExpr;
 }
 
 export interface NeExpr extends BinaryExpr {
 	type: 'NeExpr';
-	left: LeftExpr;
-	right: RightExpr;
+	left: PrimaryExpr;
+	right: PrimaryExpr;
 }
 
 export interface GtExpr extends BinaryExpr {
 	type: 'GtExpr';
-	left: LeftExpr;
-	right: RightExpr;
+	left: PrimaryExpr;
+	right: PrimaryExpr;
 }
 
 export interface GeExpr extends BinaryExpr {
 	type: 'GeExpr';
-	left: LeftExpr;
-	right: RightExpr;
+	left: PrimaryExpr;
+	right: PrimaryExpr;
 }
 
 export interface LtExpr extends BinaryExpr {
 	type: 'LtExpr';
-	left: LeftExpr;
-	right: RightExpr;
+	left: PrimaryExpr;
+	right: PrimaryExpr;
 }
 
 export interface LeExpr extends BinaryExpr {
 	type: 'LeExpr';
-	left: LeftExpr;
-	right: RightExpr;
+	left: PrimaryExpr;
+	right: PrimaryExpr;
 }
 
 export type RelationalExpr =
@@ -113,7 +109,7 @@ export enum OrderByDirection {
 
 export interface OrderByItem {
 	type: 'OrderByItem';
-	expr: LeftExpr;
+	expr: PrimaryExpr;
 	dir: OrderByDirection;
 }
 

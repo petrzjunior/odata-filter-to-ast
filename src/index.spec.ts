@@ -1,5 +1,5 @@
-import {Filter, OrderBy, OrderByDirection, parseFilter, parseOrderBy} from './index.js';
-import {describe, expect, it} from 'vitest';
+import { Filter, OrderBy, OrderByDirection, parseFilter, parseOrderBy } from './index.js';
+import { describe, expect, it } from 'vitest';
 
 describe('parseFilter', () => {
 	it('should parse binary operator', () => {
@@ -79,6 +79,36 @@ describe('parseFilter', () => {
 		});
 	});
 
+	it('should parse nested functions', () => {
+		expect(parseFilter(`strip(toLower(Name)) eq strip(toLower(Surname))`)).toStrictEqual<Filter>({
+			type: 'EqExpr',
+			left: {
+				type: 'FunctionExpr',
+				name: 'strip',
+				arguments: [{
+					type: 'FunctionExpr',
+					name: 'toLower',
+					arguments: [{
+						type: 'MemberExpr',
+						value: 'Name'
+					}]
+				}]
+			},
+			right: {
+				type: 'FunctionExpr',
+				name: 'strip',
+				arguments: [{
+					type: 'FunctionExpr',
+					name: 'toLower',
+					arguments: [{
+						type: 'MemberExpr',
+						value: 'Surname'
+					}]
+				}]
+			}
+		});
+	});
+
 	it('should use parentheses for operation precedence', () => {
 		expect(parseFilter(`(Name eq 'Milk' or Price ge 1e-1) and Price le 3.14e3 or State in [1,null] and Fresh ne false`)).toStrictEqual<Filter>({
 			type: 'OrExpr',
@@ -132,8 +162,8 @@ describe('parseFilter', () => {
 					right: {
 						type: 'ArrayExpr',
 						value: [
-							{type: 'Primitive', value: 1},
-							{type: 'Primitive', value: null},
+							{ type: 'Primitive', value: 1 },
+							{ type: 'Primitive', value: null },
 						],
 					},
 				},
@@ -162,8 +192,8 @@ describe('parseFilter', () => {
 			right: {
 				type: 'ArrayExpr',
 				value: [
-					{type: 'Primitive', value: 'Milk'},
-					{type: 'Primitive', value: 'Cheese'},
+					{ type: 'Primitive', value: 'Milk' },
+					{ type: 'Primitive', value: 'Cheese' },
 				],
 			},
 		});
