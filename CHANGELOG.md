@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.0.0](https://github.com/petrzjunior/odata-filter-to-ast/compare/odata-filter-to-ast-v3.0.0...odata-filter-to-ast-v4.0.0) (2025-04-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* support function and members on both sides
+
+### Features
+
+* support function and members on both sides ([4641aa7](https://github.com/petrzjunior/odata-filter-to-ast/commit/4641aa76e3e6bb4707799cc74a9f6d89c0b076ed))
+
 ## [3.0.0](https://github.com/petrzjunior/odata-filter-to-ast/compare/odata-filter-to-ast-v2.0.0...odata-filter-to-ast-v3.0.0) (2025-01-25)
 
 
